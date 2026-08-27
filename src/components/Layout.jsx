@@ -1,20 +1,34 @@
-import { motion } from "framer-motion";
+import { useState, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Dumbbell, LayoutDashboard, CalendarRange, LibraryBig,
-  BookOpen, History, Flame, Globe, Settings, BookMarked,
+  BookOpen, History, Globe, Settings, BookMarked, MoreHorizontal,
 } from "lucide-react";
 import { useStore } from "../store/useStore";
 import { useI18n } from "../i18n/useI18n";
 import { LANGUAGES } from "../i18n/translations";
 import { APP_VERSION } from "../config";
 
-const NAV = [
+const MORE_ITEMS = [
+  { key: "guide", labelKey: "nav.guide", icon: BookOpen },
+  { key: "equipment", labelKey: "nav.equipment", icon: BookMarked },
+  { key: "history", labelKey: "nav.history", icon: History },
+  { key: "settings", labelKey: "nav.settings", icon: Settings },
+];
+
+const DESKTOP_NAV = [
   { key: "dashboard", labelKey: "nav.today", icon: LayoutDashboard },
   { key: "planner", labelKey: "nav.plan", icon: CalendarRange },
   { key: "library", labelKey: "nav.library", icon: LibraryBig },
   { key: "guide", labelKey: "nav.guide", icon: BookOpen },
-  { key: "history", labelKey: "nav.history", icon: History },
   { key: "equipment", labelKey: "nav.equipment", icon: BookMarked },
+  { key: "history", labelKey: "nav.history", icon: History },
+];
+
+const MOBILE_NAV = [
+  { key: "dashboard", labelKey: "nav.today", icon: LayoutDashboard },
+  { key: "planner", labelKey: "nav.plan", icon: CalendarRange },
+  { key: "library", labelKey: "nav.library", icon: LibraryBig },
 ];
 
 export default function Layout({ children }) {
@@ -23,31 +37,37 @@ export default function Layout({ children }) {
   const lang = useStore((s) => s.profile.lang) || "en";
   const setLang = useStore((s) => s.setLang);
   const { t } = useI18n();
+  const [moreOpen, setMoreOpen] = useState(false);
 
   const toggleLang = () => setLang(lang === "en" ? "fa" : "en");
+
+  const handleMoreSelect = useCallback((key) => {
+    setPage(key);
+    setMoreOpen(false);
+  }, [setPage]);
 
   return (
     <div className="min-h-screen flex">
       {/* ---------- Desktop sidebar ---------- */}
-      <aside className="hidden lg:flex w-64 shrink-0 flex-col border-e border-line bg-bg-soft/60 backdrop-blur sticky top-0 h-screen p-5">
-        <div className="flex items-center gap-3 px-2 py-1">
-          <div className="w-10 h-10 rounded-xl bg-volt grid place-items-center shadow-glow">
-            <Dumbbell size={22} className="text-bg" strokeWidth={2.4} />
+      <aside className="hidden lg:flex w-56 shrink-0 flex-col border-e border-line bg-bg-soft/60 backdrop-blur sticky top-0 h-screen p-4">
+        <div className="flex items-center gap-2.5 px-2 py-1">
+          <div className="w-9 h-9 rounded-xl bg-volt grid place-items-center shadow-glow">
+            <Dumbbell size={20} className="text-bg" strokeWidth={2.4} />
           </div>
           <div>
-            <div className="font-display font-bold text-lg leading-none tracking-tight">Forge</div>
-            <div className="text-[11px] text-faint mt-0.5 tracking-wide uppercase">{t("app.tagline")}</div>
+            <div className="font-display font-bold text-base leading-none tracking-tight">Forge</div>
+            <div className="text-[10px] text-faint mt-0.5 tracking-wide uppercase">{t("app.tagline")}</div>
           </div>
         </div>
 
-        <nav className="mt-9 flex flex-col gap-1.5">
-          {NAV.map(({ key, labelKey, icon: Icon }) => {
+        <nav className="mt-8 flex flex-col gap-1">
+          {DESKTOP_NAV.map(({ key, labelKey, icon: Icon }) => {
             const active = page === key;
             return (
               <button
                 key={key}
                 onClick={() => setPage(key)}
-                className={`relative flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors cursor-pointer ${
+                className={`relative flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer ${
                   active ? "text-volt" : "text-muted hover:text-ink hover:bg-surface/70"
                 }`}
               >
@@ -58,43 +78,33 @@ export default function Layout({ children }) {
                     transition={{ type: "spring", stiffness: 380, damping: 32 }}
                   />
                 )}
-                <Icon size={18} className="relative z-10 shrink-0" />
+                <Icon size={17} className="relative z-10 shrink-0" />
                 <span className="relative z-10">{t(labelKey)}</span>
               </button>
             );
           })}
         </nav>
 
-        <div className="mt-auto space-y-3">
+        <div className="mt-auto space-y-2">
           <button
             onClick={() => setPage("settings")}
-            className={`w-full flex items-center gap-3 rounded-xl p-3 text-sm font-medium transition-colors cursor-pointer ${
+            className={`w-full flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors cursor-pointer ${
               page === "settings" ? "text-volt bg-volt/10 border border-volt/25" : "text-muted hover:text-ink hover:bg-surface/70 border border-transparent"
             }`}
           >
-            <Settings size={16} /> {t("nav.settings")}
+            <Settings size={15} /> {t("nav.settings")}
           </button>
 
           <button
             onClick={toggleLang}
-            className="w-full flex items-center justify-between rounded-xl bg-surface/80 border border-line p-3 text-sm text-muted hover:text-ink hover:border-volt/40 transition-colors cursor-pointer"
+            className="w-full flex items-center justify-between rounded-xl bg-surface/80 border border-line px-3 py-2.5 text-sm text-muted hover:text-ink hover:border-volt/40 transition-colors cursor-pointer"
           >
-            <span className="flex items-center gap-2.5">
-              <Globe size={16} /> {LANGUAGES[lang]?.name ?? lang}
+            <span className="flex items-center gap-2">
+              <Globe size={15} /> {LANGUAGES[lang]?.name ?? lang}
             </span>
-            <span className="chip !py-1 !px-2 !text-[11px]">{lang === "en" ? "فارسی ←" : "→ EN"}</span>
+            <span className="chip !py-0.5 !px-2 !text-[10px]">{lang === "en" ? "فارسی ←" : "→ EN"}</span>
           </button>
 
-          <div className="rounded-xl bg-surface/80 border border-line p-3.5 flex gap-3 items-start">
-            <Flame size={16} className="text-ember shrink-0 mt-0.5" />
-            <p className="text-[11.5px] text-muted leading-relaxed">
-              {t("side.tip1")}
-              <button onClick={() => setPage("guide")} className="text-ice hover:underline cursor-pointer">
-                {t("side.guideLink")}
-              </button>
-              {t("side.tip2")}
-            </p>
-          </div>
           <p className="text-[10px] text-faint leading-relaxed px-1">
             {t("side.credit")}{" "}
             <a href="https://oss.exercisedb.dev" target="_blank" rel="noreferrer" className="underline hover:text-muted" dir="ltr">
@@ -106,54 +116,111 @@ export default function Layout({ children }) {
       </aside>
 
       {/* ---------- Main content ---------- */}
-      <main className="flex-1 min-w-0 pb-24 lg:pb-8">{children}</main>
-
-      {/* ---------- Mobile floating buttons ---------- */}
-      {page !== "session" && (
-        <>
-          <button
-            onClick={toggleLang}
-            aria-label="Language"
-            className="lg:hidden fixed bottom-[78px] end-3 z-30 h-10 px-3 flex items-center gap-1.5 rounded-full bg-bg/85 backdrop-blur border border-line text-xs font-semibold text-muted hover:text-volt hover:border-volt/40 transition-colors cursor-pointer shadow-card"
-          >
-            <Globe size={15} />
-            {lang === "en" ? "فا" : "EN"}
-          </button>
-          <button
-            onClick={() => setPage("settings")}
-            aria-label="Settings"
-            className="lg:hidden fixed bottom-[78px] start-3 z-30 h-10 w-10 flex items-center justify-center rounded-full bg-bg/85 backdrop-blur border border-line text-muted hover:text-volt hover:border-volt/40 transition-colors cursor-pointer shadow-card"
-          >
-            <Settings size={16} />
-          </button>
-        </>
-      )}
+      <main className="flex-1 min-w-0 pb-20 lg:pb-6">{children}</main>
 
       {/* ---------- Mobile bottom nav ---------- */}
-      <nav className="lg:hidden fixed bottom-0 inset-x-0 z-30 bg-bg/90 backdrop-blur-md border-t border-line pb-[env(safe-area-inset-bottom)]">
-        <div className="grid grid-cols-5">
-          {NAV.map(({ key, labelKey, icon: Icon }) => {
-            const active = page === key;
-            return (
-              <button
-                key={key}
-                onClick={() => setPage(key)}
-                className="relative flex flex-col items-center gap-1 py-2.5 cursor-pointer"
-              >
-                {active && (
-                  <motion.span
-                    layoutId="nav-dot"
-                    className="absolute top-0 h-0.5 w-10 rounded-full bg-volt"
-                    transition={{ type: "spring", stiffness: 400, damping: 32 }}
-                  />
-                )}
-                <Icon size={20} className={active ? "text-volt" : "text-faint"} />
-                <span className={`text-[10px] font-medium ${active ? "text-volt" : "text-faint"}`}>{t(labelKey)}</span>
-              </button>
-            );
-          })}
-        </div>
-      </nav>
+      {page !== "session" && (
+        <nav className="lg:hidden fixed bottom-0 inset-x-0 z-30 bg-bg/95 backdrop-blur-lg border-t border-line/50 pb-[env(safe-area-inset-bottom)]">
+          <div className="grid grid-cols-4 h-14">
+            {MOBILE_NAV.map(({ key, labelKey, icon: Icon }) => {
+              const active = page === key;
+              return (
+                <button
+                  key={key}
+                  onClick={() => setPage(key)}
+                  className="relative flex flex-col items-center justify-center gap-0.5 cursor-pointer"
+                >
+                  {active && (
+                    <motion.span
+                      layoutId="nav-pill-mobile"
+                      className="absolute top-0 h-[3px] w-8 rounded-full bg-volt"
+                      transition={{ type: "spring", stiffness: 400, damping: 32 }}
+                    />
+                  )}
+                  <Icon size={20} className={active ? "text-volt" : "text-faint"} strokeWidth={active ? 2.2 : 1.8} />
+                  <span className={`text-[10px] font-medium ${active ? "text-volt" : "text-faint"}`}>{t(labelKey)}</span>
+                </button>
+              );
+            })}
+
+            {/* More tab */}
+            <button
+              onClick={() => setMoreOpen(true)}
+              className="relative flex flex-col items-center justify-center gap-0.5 cursor-pointer"
+            >
+              <MoreHorizontal size={20} className="text-faint" strokeWidth={1.8} />
+              <span className="text-[10px] font-medium text-faint">More</span>
+            </button>
+          </div>
+        </nav>
+      )}
+
+      {/* ---------- More bottom sheet ---------- */}
+      <AnimatePresence>
+        {moreOpen && (
+          <>
+            {/* Overlay */}
+            <motion.div
+              key="more-overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="lg:hidden fixed inset-0 z-40 bg-black/60"
+              onClick={() => setMoreOpen(false)}
+            />
+
+            {/* Sheet */}
+            <motion.div
+              key="more-sheet"
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", stiffness: 320, damping: 36 }}
+              drag="y"
+              dragConstraints={{ top: 0 }}
+              dragElastic={0.15}
+              onDragEnd={(_, info) => {
+                if (info.offset.y > 80 || info.velocity.y > 400) setMoreOpen(false);
+              }}
+              className="lg:hidden fixed bottom-0 inset-x-0 z-50 bg-surface rounded-t-3xl pb-[env(safe-area-inset-bottom)]"
+            >
+              {/* Drag handle */}
+              <div className="flex justify-center pt-3 pb-2">
+                <div className="w-10 h-1 rounded-full bg-faint/60" />
+              </div>
+
+              {/* Items */}
+              <div className="px-4 pb-3">
+                {MORE_ITEMS.map(({ key, labelKey, icon: Icon }) => (
+                  <button
+                    key={key}
+                    onClick={() => handleMoreSelect(key)}
+                    className="w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium text-muted hover:text-ink hover:bg-surface-2 transition-colors cursor-pointer"
+                  >
+                    <Icon size={18} className="shrink-0" />
+                    <span>{t(labelKey)}</span>
+                  </button>
+                ))}
+
+                {/* Language toggle */}
+                <div className="mt-1 border-t border-line/50 pt-3">
+                  <button
+                    onClick={toggleLang}
+                    className="w-full flex items-center justify-between px-4 py-3.5 rounded-xl text-sm font-medium text-muted hover:text-ink hover:bg-surface-2 transition-colors cursor-pointer"
+                  >
+                    <span className="flex items-center gap-3">
+                      <Globe size={18} className="shrink-0" />
+                      {LANGUAGES[lang]?.name ?? lang}
+                    </span>
+                    <span className="chip !py-0.5 !px-2 !text-[10px]">{lang === "en" ? "فارسی ←" : "→ EN"}</span>
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
