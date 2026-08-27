@@ -1,0 +1,11 @@
+{
+  "appId": "com.ocanel.forge",
+  "appName": "Forge",
+  "webDir": "dist",
+  "android": {
+    "allowMixedContent": false
+  },
+  "server": {
+    "androidScheme": "https"
+  }
+}

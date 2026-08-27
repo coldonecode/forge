@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+dist-phone/
+
+# Capacitor / Android build artifacts (regenerable)
+android/.gradle/
+android/app/build/
+android/build/
+android/capacitor-cordova-android-plugins/build/
+android/local.properties
+
+# Editor / OS noise
+.vscode/
+.idea/
+*.log
+Thumbs.db
+.DS_Store
