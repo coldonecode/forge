@@ -4,6 +4,8 @@ import { STARTER_PLANS } from "../data/starterPlans";
 import { getById } from "../api/exerciseDb";
 import { translate } from "../i18n/translations";
 
+const DATA_VERSION = 2;
+
 export const uid = () =>
   Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
 
@@ -35,6 +37,14 @@ function findLastLoggedWeight(logs, exerciseId) {
   return best;
 }
 
+function migrateData(state) {
+  const s = { ...state };
+  if (s.dataVersion == null || s.dataVersion < DATA_VERSION) {
+    s.dataVersion = DATA_VERSION;
+  }
+  return s;
+}
+
 export const useStore = create(
   persist(
     (set, get) => ({
@@ -43,6 +53,11 @@ export const useStore = create(
       planDays: [],
       logs: {},
       activeSession: null,
+      favorites: { exercises: [], equipment: [], presets: [] },
+      familiarity: {},
+      notes: {},
+      personalRecords: {},
+      dataVersion: DATA_VERSION,
 
       // ---------- transient ----------
       page: "dashboard",
@@ -107,6 +122,11 @@ export const useStore = create(
           planDays: [],
           logs: {},
           activeSession: null,
+          favorites: { exercises: [], equipment: [], presets: [] },
+          familiarity: {},
+          notes: {},
+          personalRecords: {},
+          dataVersion: DATA_VERSION,
           page: "onboarding",
         }),
 
@@ -165,6 +185,20 @@ export const useStore = create(
         });
         set({ planDays: days });
       },
+
+      replaceExerciseInDay: (dayId, rowId, newExerciseId) =>
+        set({
+          planDays: get().planDays.map((d) =>
+            d.id === dayId
+              ? {
+                  ...d,
+                  exercises: d.exercises.map((e) =>
+                    e.id === rowId ? { ...e, exerciseId: newExerciseId } : e
+                  ),
+                }
+              : d
+          ),
+        }),
 
       // ---------- session ----------
       startSession: (dayId) => {
@@ -229,11 +263,116 @@ export const useStore = create(
           totalSets,
           entries,
         };
-        set({ logs: { ...get().logs, [todayISO()]: log }, activeSession: null, page: "dashboard" });
+
+        const newPersonalRecords = { ...get().personalRecords };
+        for (const en of s.entries) {
+          for (const set of en.sets) {
+            if (!set.done) continue;
+            const w = Number(set.weight) || 0;
+            const r = Number(set.reps) || 0;
+            const vol = w * r;
+            const prev = newPersonalRecords[en.exerciseId];
+            if (!prev || w > prev.maxWeight || vol > prev.maxVolume) {
+              newPersonalRecords[en.exerciseId] = {
+                maxWeight: Math.max(w, prev?.maxWeight ?? 0),
+                maxReps: Math.max(r, prev?.maxReps ?? 0),
+                maxVolume: Math.max(vol, prev?.maxVolume ?? 0),
+                lastUpdated: todayISO(),
+              };
+            }
+          }
+        }
+
+        set({
+          logs: { ...get().logs, [todayISO()]: log },
+          activeSession: null,
+          personalRecords: newPersonalRecords,
+          page: "dashboard",
+        });
         return log;
       },
 
       discardSession: () => set({ activeSession: null }),
+
+      // ---------- favorites ----------
+      toggleFavorite: (type, id) =>
+        set({
+          favorites: {
+            ...get().favorites,
+            [type]: get().favorites[type].includes(id)
+              ? get().favorites[type].filter((x) => x !== id)
+              : [...get().favorites[type], id],
+          },
+        }),
+      isFavorite: (type, id) => get().favorites[type]?.includes(id) ?? false,
+
+      // ---------- familiarity ----------
+      setFamiliarity: (exerciseId, level) =>
+        set({ familiarity: { ...get().familiarity, [exerciseId]: level } }),
+
+      // ---------- notes ----------
+      setNote: (key, text) =>
+        set({
+          notes: text
+            ? { ...get().notes, [key]: text }
+            : Object.fromEntries(Object.entries(get().notes).filter(([k]) => k !== key)),
+        }),
+      getNote: (key) => get().notes[key] ?? "",
+
+      // ---------- personal records ----------
+      updatePersonalRecords: (exerciseId, weight, reps) => {
+        const w = Number(weight) || 0;
+        const r = Number(reps) || 0;
+        const vol = w * r;
+        const prev = get().personalRecords[exerciseId];
+        if (!prev || w > prev.maxWeight || vol > prev.maxVolume) {
+          set({
+            personalRecords: {
+              ...get().personalRecords,
+              [exerciseId]: {
+                maxWeight: Math.max(w, prev?.maxWeight ?? 0),
+                maxReps: Math.max(r, prev?.maxReps ?? 0),
+                maxVolume: Math.max(vol, prev?.maxVolume ?? 0),
+                lastUpdated: todayISO(),
+              },
+            },
+          });
+        }
+      },
+
+      // ---------- export / import ----------
+      exportData: () => {
+        const s = get();
+        return JSON.stringify({
+          profile: s.profile,
+          planDays: s.planDays,
+          logs: s.logs,
+          favorites: s.favorites,
+          familiarity: s.familiarity,
+          notes: s.notes,
+          personalRecords: s.personalRecords,
+          dataVersion: s.dataVersion,
+        });
+      },
+      importData: (jsonString) => {
+        try {
+          const data = JSON.parse(jsonString);
+          if (!data || typeof data !== "object") return { success: false, error: "Invalid data" };
+          const patch = {};
+          if (data.profile) patch.profile = { ...get().profile, ...data.profile };
+          if (Array.isArray(data.planDays)) patch.planDays = data.planDays;
+          if (data.logs && typeof data.logs === "object") patch.logs = data.logs;
+          if (data.favorites) patch.favorites = data.favorites;
+          if (data.familiarity) patch.familiarity = data.familiarity;
+          if (data.notes) patch.notes = data.notes;
+          if (data.personalRecords) patch.personalRecords = data.personalRecords;
+          patch.dataVersion = DATA_VERSION;
+          set(patch);
+          return { success: true };
+        } catch (e) {
+          return { success: false, error: e.message };
+        }
+      },
     }),
     {
       name: "forge-store",
@@ -242,7 +381,20 @@ export const useStore = create(
         planDays: s.planDays,
         logs: s.logs,
         activeSession: s.activeSession,
+        favorites: s.favorites,
+        familiarity: s.familiarity,
+        notes: s.notes,
+        personalRecords: s.personalRecords,
+        dataVersion: s.dataVersion,
       }),
+      onRehydrateStorage: () => (state) => {
+        if (state) {
+          const migrated = migrateData(state);
+          if (migrated.dataVersion !== state.dataVersion) {
+            state.dataVersion = migrated.dataVersion;
+          }
+        }
+      },
     }
   )
 );

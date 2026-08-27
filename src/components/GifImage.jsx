@@ -3,9 +3,12 @@ import { motion } from "framer-motion";
 import { ImageOff } from "lucide-react";
 import { useStore } from "../store/useStore";
 import { getSvgAnimation } from "./svg";
+import AnimationControls from "./AnimationControls";
 
 export default function GifImage({ src, alt, className = "", eager = false, exerciseName }) {
   const [state, setState] = useState("loading");
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isSlow, setIsSlow] = useState(false);
   const displayMode = useStore((s) => s.profile.displayMode);
 
   // Try SVG animation first when in svg mode
@@ -14,7 +17,17 @@ export default function GifImage({ src, alt, className = "", eager = false, exer
   if (SvgAnim) {
     return (
       <div className={`relative overflow-hidden bg-surface-2/50 flex items-center justify-center text-volt ${className}`}>
-        <SvgAnim className="w-full h-full" />
+        <div className={isSlow ? "[&_*]:![animation-duration:4s]" : ""} style={{ animationPlayState: isPlaying ? "running" : "paused" }}>
+          <SvgAnim className="w-full h-full" />
+        </div>
+        <AnimationControls
+          isPlaying={isPlaying}
+          onPlay={() => setIsPlaying(true)}
+          onPause={() => setIsPlaying(false)}
+          onReplay={() => { setIsPlaying(false); setTimeout(() => setIsPlaying(true), 50); }}
+          onSlowToggle={() => setIsSlow(v => !v)}
+          isSlow={isSlow}
+        />
       </div>
     );
   }

@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import {
   Dumbbell, LayoutDashboard, CalendarRange, LibraryBig,
-  BookOpen, History, Flame, Globe, Settings,
+  BookOpen, History, Flame, Globe, Settings, BookMarked,
 } from "lucide-react";
 import { useStore } from "../store/useStore";
 import { useI18n } from "../i18n/useI18n";
@@ -14,6 +14,7 @@ const NAV = [
   { key: "library", labelKey: "nav.library", icon: LibraryBig },
   { key: "guide", labelKey: "nav.guide", icon: BookOpen },
   { key: "history", labelKey: "nav.history", icon: History },
+  { key: "equipment", labelKey: "nav.equipment", icon: BookMarked },
 ];
 
 export default function Layout({ children }) {

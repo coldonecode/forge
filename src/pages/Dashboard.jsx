@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { useStore, weekdayIndex, sessionsThisWeek, computeStreak, totalVolume } from "../store/useStore";
 import ProgressRing from "../components/ProgressRing";
+import TodayRecommendation from "../components/TodayRecommendation";
 import { useI18n } from "../i18n/useI18n";
 import { weekdayName as wdName, formatDate } from "../i18n/translations";
 
@@ -86,6 +87,9 @@ export default function Dashboard() {
           {t("dash.editPlan")}
         </button>
       </motion.div>
+
+      {/* Today's recommendation */}
+      <TodayRecommendation />
 
       {/* Resume in-progress workout */}
       {activeSession && (

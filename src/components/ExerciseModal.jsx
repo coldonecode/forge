@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Target, Flame, ListOrdered, Plus, Check } from "lucide-react";
+import { X, Target, Flame, ListOrdered, Plus, Check, ArrowRightLeft } from "lucide-react";
 import GifImage from "./GifImage";
 import EducationPanel from "./EducationPanel";
+import FamiliarityBadge from "./FamiliarityBadge";
+import FavoriteButton from "./FavoriteButton";
 import { useStore } from "../store/useStore";
+import { EXERCISE_ALTERNATIVES } from "../data/exerciseAlternatives";
 import { useI18n } from "../i18n/useI18n";
 import { translateInstructions } from "../i18n/translateExercise";
 import { formatMuscleLocal, formatBodyPart, formatEquipment } from "../i18n/translations";
@@ -42,13 +45,16 @@ export default function ExerciseModal({ exercise, onClose }) {
           onClick={(e) => e.stopPropagation()}
           className="card w-full max-w-3xl max-w-full relative mx-auto my-auto overflow-hidden"
         >
-          <button
-            onClick={onClose}
-            className="absolute top-3.5 end-3.5 z-10 w-9 h-9 grid place-items-center rounded-full bg-bg/70 border border-line text-muted hover:text-ink transition-colors cursor-pointer"
-            aria-label="Close"
-          >
-            <X size={18} />
-          </button>
+          <div className="absolute top-3.5 end-3.5 z-10 flex items-center gap-1.5">
+            <FavoriteButton type="exercises" id={exercise.exerciseId} />
+            <button
+              onClick={onClose}
+              className="w-9 h-9 grid place-items-center rounded-full bg-bg/70 border border-line text-muted hover:text-ink transition-colors cursor-pointer"
+              aria-label="Close"
+            >
+              <X size={18} />
+            </button>
+          </div>
 
           <div className="grid md:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] overflow-hidden">
             <GifImage src={exercise.gifUrl} alt={exercise.name} exerciseName={exercise.name} eager className="aspect-square md:aspect-auto md:min-h-full max-h-[420px] md:max-h-none" />
@@ -56,6 +62,7 @@ export default function ExerciseModal({ exercise, onClose }) {
             <div className="p-6 flex flex-col gap-4 min-w-0">
               <div>
                 <h2 className={`font-display text-xl font-bold leading-tight pe-8 ${lang === "en" ? "capitalize" : ""}`}>{exercise.name}</h2>
+                <FamiliarityBadge exerciseId={exercise.exerciseId} />
                 <div className="flex flex-wrap gap-1.5 mt-2.5">
                   {exercise.equipments.map((eq) => (
                     <span key={eq} className="chip !text-volt !border-volt/30 !bg-volt/10">
@@ -102,6 +109,22 @@ export default function ExerciseModal({ exercise, onClose }) {
 
               {/* Deep form education (coach's notes) */}
               <EducationPanel exerciseName={exercise.name} />
+
+              {/* Exercise alternatives */}
+              {EXERCISE_ALTERNATIVES?.[exercise.name] && EXERCISE_ALTERNATIVES[exercise.name].length > 0 && (
+                <div className="rounded-xl border border-line bg-surface-2/40 p-3.5">
+                  <div className="flex items-center gap-2 text-xs font-display font-semibold text-ice mb-2">
+                    <ArrowRightLeft size={14} /> {t("alt.title")}
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {EXERCISE_ALTERNATIVES[exercise.name].map((alt) => (
+                      <span key={alt} className="chip !text-[11px] !py-1 cursor-pointer hover:!border-ice/50 hover:!text-ice capitalize">
+                        {alt}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {planDays.length > 0 && (
                 <div className="mt-auto pt-2 border-t border-line">

@@ -10,6 +10,7 @@ import Library from "./pages/Library";
 import Guide from "./pages/Guide";
 import Session from "./pages/Session";
 import History from "./pages/History";
+import EquipmentGuide from "./pages/EquipmentGuide";
 import Settings from "./pages/Settings";
 import { translate } from "./i18n/translations";
 import { getById } from "./api/exerciseDb";
@@ -21,6 +22,7 @@ const PAGES = {
   library: Library,
   guide: Guide,
   history: History,
+  equipment: EquipmentGuide,
   session: Session,
   settings: Settings,
 };

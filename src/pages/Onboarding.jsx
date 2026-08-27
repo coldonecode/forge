@@ -191,6 +191,7 @@ export default function Onboarding() {
                   })}
                 </div>
 
+                <p className="text-[10px] text-faint text-center mt-4 px-4">{t("disclaimer.text")}</p>
                 <div className="flex gap-3 mt-6">
                   <button onClick={() => setStep(1)} className="btn-ghost !px-4"><ArrowLeft size={15} className={rtlArrow} /></button>
                   <button

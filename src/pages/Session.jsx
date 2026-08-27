@@ -3,10 +3,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   X, Check, Trophy, Weight, Clock3, PartyPopper, Flag,
 } from "lucide-react";
-import { useStore } from "../store/useStore";
+import { useStore, todayISO } from "../store/useStore";
 import { getById } from "../api/exerciseDb";
 import GifImage from "../components/GifImage";
 import RestTimer from "../components/RestTimer";
+import WorkoutNotes from "../components/WorkoutNotes";
 import { useI18n } from "../i18n/useI18n";
 import { formatDate } from "../i18n/translations";
 import { haptic, hapticSuccess, keepScreenAwake } from "../utils/mobile";
@@ -23,6 +24,7 @@ export default function Session() {
   const [resting, setResting] = useState(null); // { seconds, id }
   const [elapsed, setElapsed] = useState(0);
   const [finishedLog, setFinishedLog] = useState(null);
+  const [noteModal, setNoteModal] = useState(null);
 
   useEffect(() => {
     if (!session) return;
@@ -152,7 +154,16 @@ export default function Session() {
               <div className="flex items-center gap-3.5 mb-4">
                 <GifImage src={ex?.gifUrl} alt={ex?.name} exerciseName={ex?.name} eager={ei === 0} className="w-14 h-14 rounded-xl border border-line shrink-0" />
                 <div className="min-w-0 flex-1">
-                  <h2 className={`font-display font-semibold leading-tight line-clamp-2 ${lang === "en" ? "capitalize" : ""}`}>{ex?.name}</h2>
+                  <div className="flex items-center gap-2">
+                    <h2 className={`font-display font-semibold leading-tight line-clamp-2 ${lang === "en" ? "capitalize" : ""}`}>{ex?.name}</h2>
+                    <button
+                      onClick={() => setNoteModal({ exerciseId: en.exerciseId, date: todayISO() })}
+                      className="shrink-0 text-sm opacity-60 hover:opacity-100 transition-opacity cursor-pointer"
+                      aria-label="Add note"
+                    >
+                      📝
+                    </button>
+                  </div>
                   <div className="text-xs text-faint mt-0.5" dir="ltr" style={{ textAlign: "start" }}>
                     {t("ss.target")} {en.targetSets} × {en.targetReps}
                   </div>
@@ -260,6 +271,17 @@ export default function Session() {
             seconds={resting.seconds}
             onSkip={() => setResting(null)}
             onDone={() => setResting(null)}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Notes modal */}
+      <AnimatePresence>
+        {noteModal && (
+          <WorkoutNotes
+            exerciseId={noteModal.exerciseId}
+            date={noteModal.date}
+            onClose={() => setNoteModal(null)}
           />
         )}
       </AnimatePresence>

@@ -16,6 +16,7 @@ export const translations = {
     "nav.library": "Exercises",
     "nav.guide": "Machines 101",
     "nav.history": "History",
+    "nav.equipment": "Equipment",
     "nav.settings": "Settings",
 
     // Catalog gate
@@ -183,6 +184,110 @@ export const translations = {
     "st.resetConfirm": "This will delete ALL your workouts, logs, and settings. Continue?",
     "st.reset": "Reset everything",
 
+    // Equipment Guide
+    "eqg.title": "Equipment Guide",
+    "eqg.sub": "Every machine in your gym explained — what it is, how to use it, and what muscles it works.",
+    "eqg.search": "Search equipment…",
+    "eqg.howToUse": "How to use",
+    "eqg.adjustments": "Adjustments",
+    "eqg.mistakes": "Common mistakes",
+    "eqg.exercises": "Exercises with this equipment",
+    "eqg.tips": "Beginner tip",
+
+    // Today recommendation
+    "rec.title": "What should I train today?",
+    "rec.rest": "Rest day — your muscles are still recovering",
+    "rec.scheduled": "Today's planned workout",
+    "rec.overdue": "You haven't trained in a while — {day} is a great choice",
+    "rec.recovery": "Muscle recovery status",
+    "rec.ready": "Ready",
+    "rec.recent": "Recent",
+    "rec.needsRest": "Needs rest",
+
+    // Muscle names (for recovery indicators)
+    "muscle.chest": "Chest",
+    "muscle.back": "Back",
+    "muscle.shoulders": "Shoulders",
+    "muscle.arms": "Arms",
+    "muscle.legs": "Legs",
+    "muscle.core": "Core",
+
+    // Muscle group names (for presets)
+    "mg.chest": "Chest",
+    "mg.back": "Back",
+    "mg.shoulders": "Shoulders",
+    "mg.biceps": "Biceps",
+    "mg.triceps": "Triceps",
+    "mg.quadriceps": "Quads",
+    "mg.hamstrings": "Hamstrings",
+    "mg.glutes": "Glutes",
+    "mg.calves": "Calves",
+    "mg.abs": "Core",
+
+    // Familiarity
+    "fam.never_tried": "Never tried",
+    "fam.learning": "Learning",
+    "fam.comfortable": "Comfortable",
+    "fam.mastered": "Mastered",
+
+    // Favorites
+    "fav.title": "Favorites",
+    "fav.exercises": "Favorite exercises",
+    "fav.equipment": "Favorite equipment",
+    "fav.presets": "Favorite presets",
+    "fav.empty": "No favorites yet. Tap the heart icon on any exercise to save it here.",
+    "fav.added": "Added to favorites",
+    "fav.removed": "Removed from favorites",
+
+    // Backup/Restore
+    "backup.title": "Backup & Restore",
+    "backup.export": "Export data",
+    "backup.exportDesc": "Download all your workout data as a JSON file",
+    "backup.import": "Import data",
+    "backup.importDesc": "Restore from a previously exported backup file",
+    "backup.warning": "Browser storage can be cleared unexpectedly. Regular backups keep your data safe.",
+    "backup.importConfirm": "This will replace all current data. Continue?",
+    "backup.success": "Backup imported successfully",
+    "backup.error": "Invalid backup file",
+
+    // Notes
+    "note.add": "Add note",
+    "note.placeholder": "e.g. Machine felt heavy today…",
+    "note.saved": "Note saved",
+
+    // Progression
+    "prog.title": "Progress suggestions",
+    "prog.increaseWeight": "You completed all target reps last time. Consider increasing the weight slightly.",
+    "prog.increaseReps": "You're doing well! Try adding 1-2 more reps next time.",
+    "prog.maintain": "Keep going — you're making progress!",
+    "prog.pr.new": "New personal record!",
+    "prog.pr.weight": "Heaviest weight: {weight} kg",
+    "prog.pr.reps": "Most reps: {reps} at {weight} kg",
+
+    // Calendar
+    "cal.title": "Workout Calendar",
+    "cal.workout": "Workout",
+    "cal.rest": "Rest day",
+    "cal.missed": "Missed",
+    "cal.tapped": "Tap to view details",
+
+    // Animation controls
+    "anim.play": "Play",
+    "anim.pause": "Pause",
+    "anim.replay": "Replay",
+    "anim.slow": "Slow motion",
+    "anim.normal": "Normal speed",
+
+    // Exercise alternatives
+    "alt.title": "Alternative exercises",
+    "alt.noEquipment": "Don't have this equipment?",
+    "alt.switch": "Switch to alternative",
+    "alt.current": "Current exercise",
+
+    // Disclaimer
+    "disclaimer.title": "Safety Disclaimer",
+    "disclaimer.text": "This app provides educational guidance only and does not replace professional coaching or medical advice. Consult a qualified trainer or physician before starting any exercise program.",
+
     // Equipment
     "eq.leverage_machine.label": "Pin-Loaded Machines",
     "eq.leverage_machine.blurb": "The most beginner-friendly equipment in the gym. You set the weight by moving a metal pin into a stack of plates, adjust the seat height, and push or pull a padded handle. The weight travels on a fixed track, so it guides you through the movement safely — no spotter needed.",
@@ -205,6 +310,14 @@ export const translations = {
     "eq.dumbbell.t2": "Return dumbbells to the rack after use",
     "eq.dumbbell.t3": "Keep wrists straight and movements slow",
     "eq.body_weight.label": "Bodyweight",
+    "bp.biceps": "Biceps",
+    "bp.triceps": "Triceps",
+    "bp.quadriceps": "Quads",
+    "bp.hamstrings": "Hamstrings",
+    "bp.glutes": "Glutes",
+    "bp.calves": "Calves",
+    "bp.abs": "Core",
+
     "eq.body_weight.blurb": "Exercises using your own body as resistance — push-ups, planks, crunches. No setup needed, perfect warm-ups, and they teach control before adding external weight.",
     "eq.body_weight.t1": "Slow, controlled reps beat fast sloppy ones",
     "eq.body_weight.t2": "Great between machine sets while resting other muscles",
@@ -242,6 +355,31 @@ export const translations = {
     "hi.min": "min",
     "hi.sets": "sets",
 
+    // Notes
+    "notes.placeholder": "Add a note…",
+
+    // Familiarity
+    "fam.never_tried": "New",
+    "fam.learning": "Learning",
+    "fam.comfortable": "Good",
+    "fam.mastered": "Pro",
+
+    // Progress suggestions
+    "prog.title": "Smart suggestions",
+    "prog.increaseWeight": "Increase weight",
+    "prog.increaseReps": "Add reps",
+    "prog.maintain": "Consolidate",
+    "prog.weight": "Weight:",
+    "prog.keepGoing": "Keep going — suggestions will appear after a few more workouts.",
+
+    // Personal records
+    "prog.pr.title": "Personal records",
+    "prog.pr.new": "New PR!",
+    "prog.pr.weight": "Best weight",
+    "prog.pr.reps": "Best reps",
+    "prog.pr.none": "No personal records yet.",
+    "prog.pr.start": "Complete your first workout to start tracking PRs.",
+
     // Misc words
     "w.exercise_one": "exercise",
   },
@@ -256,6 +394,7 @@ export const translations = {
     "nav.library": "حرکات",
     "nav.guide": "آموزش دستگاه‌ها",
     "nav.history": "تاریخچه",
+    "nav.equipment": "تجهیزات",
     "nav.settings": "تنظیمات",
 
     // Catalog gate
@@ -423,6 +562,110 @@ export const translations = {
     "st.resetConfirm": "تمام تمرین‌ها، لاگ‌ها و تنظیمات حذف می‌شوند. ادامه می‌دهید؟",
     "st.reset": "بازنشانی همه چیز",
 
+    // Equipment Guide
+    "eqg.title": "راهنمای تجهیزات",
+    "eqg.sub": "هر دستگاه باشگاهت رو اینجا توضیح دادیم — چیه، چطور استفاده کنی، و چه عضلاتی رو کار می‌کنه.",
+    "eqg.search": "جستجوی تجهیزات…",
+    "eqg.howToUse": "نحوه استفاده",
+    "eqg.adjustments": "تنظیمات",
+    "eqg.mistakes": "اشتباه‌های رایج",
+    "eqg.exercises": "تمرین‌ها با این تجهیز",
+    "eqg.tips": "نکته مبتدی",
+
+    // Today recommendation
+    "rec.title": "امروز چه تمرینی کنم؟",
+    "rec.rest": "روز استراحت — عضلات هنوز در حال بازیابی هستند",
+    "rec.scheduled": "تمرین برنامه‌ریزی شده امروز",
+    "rec.overdue": "مدتی است تمرین نکرده‌ای — {day} انتخاب خوبی است",
+    "rec.recovery": "وضعیت بازیابی عضلات",
+    "rec.ready": "آماده",
+    "rec.recent": "اخیراً",
+    "rec.needsRest": "نیاز به استراحت",
+
+    // Muscle names
+    "muscle.chest": "سینه",
+    "muscle.back": "پشت",
+    "muscle.shoulders": "شانه",
+    "muscle.arms": "بازو",
+    "muscle.legs": "پا",
+    "muscle.core": "شکم",
+
+    // Muscle group names (for presets)
+    "mg.chest": "سینه",
+    "mg.back": "پشت",
+    "mg.shoulders": "شانه",
+    "mg.biceps": "جلو بازو",
+    "mg.triceps": "پشت بازو",
+    "mg.quadriceps": "چهارسر",
+    "mg.hamstrings": "همسترینگ",
+    "mg.glutes": "باسن",
+    "mg.calves": "ساق پا",
+    "mg.abs": "شکم",
+
+    // Familiarity
+    "fam.never_tried": "هنوز امتحان نکردم",
+    "fam.learning": "در حال یادگیری",
+    "fam.comfortable": "راحت انجام می‌دم",
+    "fam.mastered": "کامل یاد گرفتم",
+
+    // Favorites
+    "fav.title": "علاقه‌مندی‌ها",
+    "fav.exercises": "تمرین‌های مورد علاقه",
+    "fav.equipment": "تجهیزات مورد علاقه",
+    "fav.presets": "پیش‌ تنظیم‌های مورد علاقه",
+    "fav.empty": "هنوز علاقه‌مندی نداری. روی آیکون قلب هر تمرین بزن تا اینجا ذخیره بشه.",
+    "fav.added": "به علاقه‌مندی‌ها اضافه شد",
+    "fav.removed": "از علاقه‌مندی‌ها حذف شد",
+
+    // Backup/Restore
+    "backup.title": "پشتیبان‌گیری و بازیابی",
+    "backup.export": "خروجی گرفتن",
+    "backup.exportDesc": "دانلود تمام اطلاعات تمرین به صورت فایل JSON",
+    "backup.import": "بازیابی اطلاعات",
+    "backup.importDesc": "بازیابی از فایل پشتیبان قبلاً خروجی گرفته شده",
+    "backup.warning": "فضای ذخیره‌سازی مرورگر ممکن است به طور غیرمنتظره پاک شود. پشتیبان‌گیری منظم اطلاعات شما را ایمن نگه می‌دارد.",
+    "backup.importConfirm": "تمام اطلاعات فعلی جایگزین می‌شود. ادامه می‌دهید؟",
+    "backup.success": "پشتیبان با موفقیت بازیابی شد",
+    "backup.error": "فایل پشتیبان نامعتبر است",
+
+    // Notes
+    "note.add": "افزودن یادداشت",
+    "note.placeholder": "مثلاً امروز دستگاه سنگین بود…",
+    "note.saved": "یادداشت ذخیره شد",
+
+    // Progression
+    "prog.title": "پیشنهادات پیشرفت",
+    "prog.increaseWeight": "تکرارهای هدف رو آخرین بار کامل انجام دادی. وزنه رو کمی زیاد کن.",
+    "prog.increaseReps": "خوب پیش می‌ری! ۱-۲ تکرار بیشتر امتحان کن.",
+    "prog.maintain": "ادامه بده — داری پیشرفت می‌کنی!",
+    "prog.pr.new": "رکورد جدید شخصی!",
+    "prog.pr.weight": "سنگین‌ترین وزنه: {weight} کیلو",
+    "prog.pr.reps": "بیشترین تکرار: {reps} با {weight} کیلو",
+
+    // Calendar
+    "cal.title": "تقویم تمرینات",
+    "cal.workout": "تمرین",
+    "cal.rest": "روز استراحت",
+    "cal.missed": "از دست رفته",
+    "cal.tapped": "برای جزئیات بزنید",
+
+    // Animation controls
+    "anim.play": "پخش",
+    "anim.pause": "توقف",
+    "anim.replay": "پخش مجدد",
+    "anim.slow": "آهسته",
+    "anim.normal": "سرعت عادی",
+
+    // Exercise alternatives
+    "alt.title": "تمرین‌های جایگزین",
+    "alt.noEquipment": "این تجهیز رو نداری؟",
+    "alt.switch": "تعویض با جایگزین",
+    "alt.current": "تمرین فعلی",
+
+    // Disclaimer
+    "disclaimer.title": "سلب مسئولیت ایمنی",
+    "disclaimer.text": "این اپلیکیشن فقط راهنمای آموزشی است و جایگزین مربیگری حرفه‌ای یا مشاوره پزشکی نیست. قبل از شروع هر برنامه تمرینی با مربی یا پزشک مشورت کنید.",
+
     // Equipment
     "eq.leverage_machine.label": "دستگاه‌های وزنه‌ای (پین‌دار)",
     "eq.leverage_machine.blurb": "دوست‌داشتنی‌ترین تجهیزات باشگاه برای تازه‌کارها. وزنه را با جابه‌جا کردن یک پین فلزی داخل پشته صفحه‌ها تنظیم می‌کنی، ارتفاع صندلی را درست می‌کنی و دستهٔ پدینگ‌دار را هل می‌دهی یا می‌کشی. وزنه روی مسیر ثابت حرکت می‌کند، پس مسیر حرکت را برایت ایمن نگه می‌دارد — بدون نیاز به همراه.",
@@ -516,6 +759,13 @@ export const translations = {
     "bp.lower arms": "ساعد",
     "bp.upper legs": "ران",
     "bp.lower legs": "ساق پا",
+    "bp.biceps": "جلو بازو",
+    "bp.triceps": "پشت بازو",
+    "bp.quadriceps": "چهارسر ران",
+    "bp.hamstrings": "همسترینگ",
+    "bp.glutes": "باسن",
+    "bp.calves": "ساق پا",
+    "bp.abs": "شکم",
     "bp.waist": "شکم و میان‌تنه",
     "bp.cardio": "هوازی",
     "bp.neck": "گردن",
@@ -550,6 +800,31 @@ export const translations = {
     "eqn.stationary bike": "دوچرخه ثابت",
     "eqn.skierg machine": "اسکی ارگ",
     "eqn.upper body ergometer": "ارگ دستی",
+
+    // Notes
+    "notes.placeholder": "یادداشت اضافه کن…",
+
+    // Familiarity
+    "fam.never_tried": "جدید",
+    "fam.learning": "در حال یادگیری",
+    "fam.comfortable": "خوب",
+    "fam.mastered": "حرفه‌ای",
+
+    // Progress suggestions
+    "prog.title": "پیشنهادات هوشمند",
+    "prog.increaseWeight": "وزنه را زیاد کن",
+    "prog.increaseReps": "تکرار اضافه کن",
+    "prog.maintain": "تثبیت کن",
+    "prog.weight": "وزنه:",
+    "prog.keepGoing": "ادامه بده — بعد از چند جلسه دیگر پیشنهادات نمایش داده می‌شوند.",
+
+    // Personal records
+    "prog.pr.title": "رکوردهای شخصی",
+    "prog.pr.new": "رکورد جدید!",
+    "prog.pr.weight": "بهترین وزنه",
+    "prog.pr.reps": "بهترین تکرار",
+    "prog.pr.none": "هنوز رکوردی ثبت نشده.",
+    "prog.pr.start": "اولین جلسه تمرینت را تمام کن تا رکوردهایت شروع شود.",
   },
 };
 
